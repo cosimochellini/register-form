@@ -1,3 +1,42 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@tailwind screens;
+
+.label-input {
+  @apply block mb-2 text-sm text-gray-600;
+}
+
+.input-form {
+  @apply mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400;
+  @apply focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500;
+  @apply disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none;
+}
+
+.input-form.is-invalid {
+  @apply border-pink-500 text-pink-600;
+  @apply invalid:border-pink-500 invalid:ring-pink-500;
+}
+
+/*
+customize the input placeholder color for the vee-validate plugin
+ */
+span[role="alert"] {
+  @apply text-xs text-red-700;
+}
+
+button {
+  @apply inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md text-white;
+}
+
+button.button-green {
+  @apply bg-green-500 hover:bg-green-600;
+}
+
+button.button-red {
+  @apply bg-red-700 text-white hover:bg-red-800;
+}
+
+button:disabled {
+  @apply cursor-not-allowed opacity-50;
+}

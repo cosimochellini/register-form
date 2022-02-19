@@ -13,12 +13,15 @@
                 :name="name"
                 :value="modelValue"
                 @change="onInput($event)"
+                ref="input"
             />
-            <span
-                v-if="errorMessage"
-                class="text-xs text-red-700"
-                :id="`${name}_error`"
-            >{{ errorMessage }}</span>
+            <Transition>
+                <div
+                    v-if="errorMessage"
+                    class="relative text-xs text-red-700"
+                    :id="`${name}_error`"
+                >{{ errorMessage }}</div>
+            </Transition>
         </div>
     </div>
 </template>
@@ -42,26 +45,30 @@ export default defineComponent({
             required: true
         },
         type: {
-            type: String as PropType<'text' | 'password' | 'date' | 'email'>,
+            type: String as PropType<'text' | 'password' | 'date' | 'email' | 'tel'>,
             default: 'text'
         },
         rules: {
             type: Array as PropType<validationRule[]>,
             default: () => []
-        }
+        },
     },
     data() {
         return {
+            dirty: false,
             errorMessage: '',
         }
     },
     computed: {
         inputClass(): classBindings {
-            return { 'border-red-500': !!this.errorMessage }
+            return {
+                'is-invalid': !!this.errorMessage,
+            }
         },
     },
     methods: {
-        validate(newValue: string) {
+        validate(newValue: string, force = false) {
+            if (!this.dirty && !force) return;
 
             for (const [validator, errorMessage] of this.rules) {
                 if (!validator(newValue)) {
@@ -74,16 +81,31 @@ export default defineComponent({
             return true;
         },
         onInput(event: Event) {
+            this.dirty = true;
+
             const newValue = (event.target as HTMLInputElement).value;
 
             this.validate(newValue);
             this.$emit('update:modelValue', newValue);
         },
-        ensureInputIsValid() {
+        ensureInputIsValid(force: boolean = false) {
             console.log('ensureInputIsValid', this.modelValue);
-            return this.validate(this.modelValue);
+            return this.validate(this.modelValue, force);
         }
     },
 })
 
 </script>
+
+<style>
+/* we will explain what these classes do next! */
+.v-enter-active,
+.v-leave-active {
+    transition: opacity 0.25s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+    opacity: 0;
+}
+</style>
