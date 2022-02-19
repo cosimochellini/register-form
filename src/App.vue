@@ -39,9 +39,14 @@ const onPrivacySubmit = (data: privacy) => {
     <div class="flex h-screen bg-gradient-to-t from-green-200 to-green-100">
         <div class="m-auto bg-white rounded-md shadow-sm">
             <div class="px-5 my-5">
-                <h1 class="text-3xl font-semibold text-gray-700">Register to our awesome website! 🌳</h1>
-                <ProgressStep :current-step="currentStep" :steps="steps" />
-
+                <h1
+                    class="text-3xl font-semibold text-gray-700 text-center"
+                >Register to our awesome website! 🌳</h1>
+                <ProgressStep
+                    :current-step="currentStep"
+                    :steps="steps"
+                    @stepClick="s => currentStep = s"
+                />
                 <RegistryStep
                     class="step"
                     @submit="onRegistrySubmit"
@@ -69,10 +74,10 @@ const onPrivacySubmit = (data: privacy) => {
 
 <style>
 .step {
-    @apply border-2 border-gray-300 my-3 rounded-md p-2;
+    @apply border-2 border-gray-300 my-3 rounded-md p-2 hidden md:block;
 }
 
 .step.active {
-    @apply border-green-500;
+    @apply border-green-500 block;
 }
 </style>

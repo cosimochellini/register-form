@@ -8,6 +8,7 @@
                 :step="index"
                 :current-step="currentStep"
                 :is-last-step="index == steps.length - 1"
+                @stepClick="handleStepClick"
             />
 
             <div class="flex-1"></div>
@@ -24,6 +25,11 @@
 import { defineComponent, PropType } from 'vue';
 import ProgressStepUnit from './ProgressStepUnit.vue';
 export default defineComponent({
+    emits: {
+        stepClick(step: number) {
+            return step !== null;
+        }
+    },
     props: {
         currentStep: {
             type: Number,
@@ -37,5 +43,12 @@ export default defineComponent({
     components: {
         ProgressStepUnit,
     },
+    methods: {
+        handleStepClick(step: number) {
+            if (this.currentStep > step) {
+                this.$emit('stepClick', step);
+            }
+        }
+    }
 })
 </script>

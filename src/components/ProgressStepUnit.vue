@@ -3,6 +3,7 @@
         <div
             :class="circleClass"
             class="w-10 h-10 mx-auto rounded-full text-lg text-white flex items-center"
+            @click="$emit('stepClick', step)"
         >
             <span class="text-white text-center w-full">
                 <i class="w-full fill-current white" :class="iconClass"></i>
@@ -50,6 +51,8 @@ export default defineComponent({
                 'bg-green-200': this.step > this.currentStep,
                 'bg-green-400': this.step === this.currentStep,
                 'bg-green-600': this.step < this.currentStep,
+                'cursor-pointer': this.step < this.currentStep,
+                'opacity-50': this.step > this.currentStep,
             }
         },
         iconClass(): classBindings {
