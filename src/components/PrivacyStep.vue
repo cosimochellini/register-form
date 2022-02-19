@@ -39,7 +39,7 @@ export default defineComponent({
 
             if (!isValid) return;
 
-            await registerService.validateRegistry(formData);
+            await registerService.validatePrivacy({ privacy: false, marketing: false });
             console.log('Form submitted');
         },
     },
