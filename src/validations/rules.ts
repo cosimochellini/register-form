@@ -19,6 +19,7 @@ const validPassword = (value: string) => passwordRegExp.test(value);
 const isDate = (value: string) => !isNaN(Date.parse(value));
 
 const hasMinimumAge = (min: number) => (value: string) => retrieveYears(value) >= min;
+const hasMaximumAge = (max: number) => (value: string) => retrieveYears(value) <= max;
 
 function retrieveYears(birthday: string) {
     const ageDifMs = Date.now() - Date.parse(birthday);
@@ -60,4 +61,5 @@ export const birthDateValidation: validationRule[] = [
     [stringRequired, 'Birth date is required'],
     [isDate, 'Birth date is not valid'],
     [hasMinimumAge(18), 'You must be at least 18 years old'],
+    [hasMaximumAge(100), 'You must be at most 100 years old o_o'],
 ];
