@@ -21,7 +21,7 @@ const isDate = (value: string) => !isNaN(Date.parse(value));
 const hasMinimumAge = (min: number) => (value: string) => retrieveYears(value) >= min;
 const hasMaximumAge = (max: number) => (value: string) => retrieveYears(value) <= max;
 
-const trueCheckbox = (value: string) => value !== 'true';
+const trueCheckbox = (value: string) => value === 'true';
 
 function retrieveYears(birthday: string) {
     const ageDifMs = Date.now() - Date.parse(birthday);

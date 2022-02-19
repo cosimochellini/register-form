@@ -1,24 +1,19 @@
 <template>
     <form @submit.prevent="handleSubmit">
         <h1 class="my-3 text-2xl font-semibold text-gray-700">Your privacy choice</h1>
-        <p class="text-gray-400 max-w-xl">Choose to accept only the privacy or even the marketing section to allow us to track your tastes for marketing purposes</p>
+        <p
+            class="text-gray-400 max-w-xl"
+        >Choose to accept only the privacy or even the marketing section to allow us to track your tastes for marketing purposes</p>
 
         <BaseInput
             ref="privacy"
             name="privacy"
             type="checkbox"
-            :model-value="form.privacy ? 'checked' : ''"
-            @update:model-value="form.privacy = $event"
+            v-model="form.privacy"
             :rules="privacyValidation"
         />
 
-        <BaseInput
-            type="checkbox"
-            ref="marketing"
-            name="marketing"
-            :model-value="form.marketing ? 'checked' : ''"
-            @update:model-value="form.marketing = $event"
-        />
+        <BaseInput type="checkbox" ref="marketing" name="marketing" v-model="form.marketing" />
         <BaseButton
             type="submit"
             :loading="loading"
@@ -37,6 +32,8 @@ import { useValidation } from '../composables/useValidation';
 import { registerService } from '../services/registerService';
 import { privacyValidation } from '../validations/rules';
 
+const checkboxParser = (value: string) => value === 'true'
+
 export default defineComponent({
     components: { BaseInput, BaseButton },
     props: {
@@ -44,7 +41,7 @@ export default defineComponent({
     },
     emits: ['submit'],
     setup() {
-        const { triggerValidation, form } = useValidation({ privacy: false, marketing: false })
+        const { triggerValidation, form } = useValidation({ privacy: 'false', marketing: 'false' })
 
         return { privacyValidation, triggerValidation, form }
     },
@@ -64,8 +61,12 @@ export default defineComponent({
             this.loading = true;
 
             try {
-                await registerService.validatePrivacy(formData);
-                this.$emit('submit', formData);
+                const { privacy, marketing } = formData
+                const data = { privacy: checkboxParser(privacy), marketing: checkboxParser(marketing) };
+
+                await registerService.validatePrivacy(data)
+
+                this.$emit('submit', data);
             } catch (error) {
                 console.error(error);
             } finally {
