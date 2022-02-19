@@ -1,6 +1,12 @@
 export type registry = {
     name: string,
     surname: string,
+    birthDate: string,
+}
+
+export type communication = {
+    email: string,
+    phone: string,
 }
 
 export type privacy = {
@@ -8,7 +14,9 @@ export type privacy = {
     marketing: boolean,
 }
 
-export type contact = {
-    email: string,
-    phone: string,
+
+export type registrationPayload = {
+    registry: registry,
+    communication: communication,
+    privacy: privacy,
 }
