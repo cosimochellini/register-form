@@ -1,13 +1,13 @@
 <template>
-    <form @submit="handleSubmit">
-        <BaseInput ref="name" name="name" type="text" v-model="form.name" :rules="nameValidation" />
+    <form @submit.prevent="handleSubmit">
+        <BaseInput ref="email" name="email" type="email" v-model="form.email" :rules="emailValidation" />
 
         <BaseInput
-            type="text"
-            ref="surname"
-            name="surname"
-            v-model="form.surname"
-            :rules="surnameValidation"
+            type="tel"
+            ref="phone"
+            name="phone"
+            v-model="form.phone"
+            :rules="phoneValidation"
         />
         <button type="submit" class="button-red mt-1" :disabled="!form.isValid">Submit</button>
     </form>
@@ -18,15 +18,15 @@ import { defineComponent } from 'vue'
 import BaseInput from './BaseInput.vue';
 import { useValidation } from '../composables/useValidation';
 import { registerService } from '../services/registerService';
-import { nameValidation, surnameValidation } from '../validations/rules';
+import { emailValidation, phoneValidation } from '../validations/rules';
 
 export default defineComponent({
     components: { BaseInput },
 
     setup() {
-        const { triggerValidation, form } = useValidation({ name: "", surname: "" })
+        const { triggerValidation, form } = useValidation({ email: "", phone: "" })
 
-        return { nameValidation, surnameValidation, triggerValidation, form }
+        return { emailValidation, phoneValidation, triggerValidation, form }
     },
     data() {
         return {}
@@ -39,7 +39,7 @@ export default defineComponent({
 
             if (!isValid) return;
 
-            await registerService.validateRegistry(formData);
+            await registerService.validateCommunication(formData);
             console.log('Form submitted');
         },
     },

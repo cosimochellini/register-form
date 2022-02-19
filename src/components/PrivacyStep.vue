@@ -1,5 +1,5 @@
 <template>
-    <form @submit="handleSubmit">
+    <form @submit.prevent="handleSubmit">
         <BaseInput ref="name" name="name" type="text" v-model="form.name" :rules="nameValidation" />
 
         <BaseInput

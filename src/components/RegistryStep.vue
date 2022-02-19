@@ -1,46 +1,91 @@
 <template>
-    <form @submit="handleSubmit">
-        <BaseInput ref="name" name="name" type="text" v-model="form.name" :rules="nameValidation" />
+    <form @submit.prevent="handleSubmit">
+        <div class="text-left">
+            <h1 class="my-3 text-2xl font-semibold text-gray-700">Your registry information</h1>
+            <p class="text-gray-400">Fill up the form below to send us a message.</p>
+        </div>
+
+        <BaseInput
+            ref="name"
+            name="name"
+            type="text"
+            placeholder="mario"
+            v-model="form.name"
+            :rules="nameValidation"
+        />
 
         <BaseInput
             type="text"
             ref="surname"
             name="surname"
+            placeholder="rossi"
             v-model="form.surname"
             :rules="surnameValidation"
         />
-        <button type="submit" class="button-red mt-1" :disabled="!form.isValid">Submit</button>
+
+        <BaseInput
+            type="date"
+            ref="birthDate"
+            name="birthDate"
+            placeholder="dd/mm/yyyy"
+            :min="minBirthDate"
+            :max="maxBirthDate"
+            v-model="form.birthDate"
+            :rules="birthDateValidation"
+        />
+        <BaseButton
+            type="submit"
+            :loading="loading"
+            class="mt-1 button-green align-self-end"
+            :disabled="!form.isValid"
+            @click="handleSubmit"
+        >Next</BaseButton>
     </form>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
 import BaseInput from './BaseInput.vue';
+import BaseButton from './BaseButton.vue';
+import { pastYearsAgo } from '../utils/date';
 import { useValidation } from '../composables/useValidation';
 import { registerService } from '../services/registerService';
-import { nameValidation, surnameValidation } from '../validations/rules';
+import { nameValidation, surnameValidation, birthDateValidation } from '../validations/rules';
 
 export default defineComponent({
-    components: { BaseInput },
+    components: { BaseInput, BaseButton },
 
     setup() {
-        const { triggerValidation, form } = useValidation({ name: "", surname: "" })
+        const { triggerValidation, form } = useValidation({ name: "", surname: "", birthDate: "" })
 
-        return { nameValidation, surnameValidation, triggerValidation, form }
+        return { nameValidation, surnameValidation, birthDateValidation, triggerValidation, form }
     },
     data() {
-        return {}
+        return {
+            loading: false,
+            maxBirthDate: pastYearsAgo(18).toISOString().substring(0, 10),
+            minBirthDate: pastYearsAgo(100).toISOString().substring(0, 10),
+        }
     },
     methods: {
         async handleSubmit() {
-            this.triggerValidation()
+            this.triggerValidation(true)
 
             const { isValid, ...formData } = this.form;
 
             if (!isValid) return;
 
-            await registerService.validateRegistry(formData);
-            console.log('Form submitted');
+            this.loading = true;
+            try {
+
+                await registerService.validateRegistry(formData);
+            } catch (error) {
+                console.error(error);
+            } finally {
+                this.loading = false;
+            }
+
+            console.log('Form submitted', formData);
         },
     },
 })
