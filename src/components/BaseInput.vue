@@ -1,7 +1,11 @@
 <template>
     <div class="text-gray-700 md:flex md:items-center mt-2">
         <div class="mb-1 md:mb-0 md:w-1/3">
-            <label class="block mb-1 capitalize" :for="name" :id="`${name}_label`">{{ name }}</label>
+            <label
+                class="block mb-1 capitalize font-semibold max-w-md"
+                :for="name"
+                :id="`${name}_label`"
+            >{{ name }}</label>
         </div>
         <div class="md:w-2/3 md:flex-grow">
             <input
@@ -14,6 +18,8 @@
                 :value="modelValue"
                 @change="onInput($event)"
                 ref="input"
+                :readonly="readonly"
+                :disabled="readonly"
             />
             <Transition>
                 <div
@@ -45,12 +51,16 @@ export default defineComponent({
             required: true
         },
         type: {
-            type: String as PropType<'text' | 'password' | 'date' | 'email' | 'tel'>,
+            type: String as PropType<'text' | 'password' | 'date' | 'email' | 'tel' | 'checkbox'>,
             default: 'text'
         },
         rules: {
             type: Array as PropType<validationRule[]>,
             default: () => []
+        },
+        readonly: {
+            type: Boolean,
+            default: false
         },
     },
     data() {
@@ -82,14 +92,13 @@ export default defineComponent({
         },
         onInput(event: Event) {
             this.dirty = true;
-
-            const newValue = (event.target as HTMLInputElement).value;
+            const element = event.target as HTMLInputElement;
+            const newValue = this.type === 'checkbox' ? element.checked.toString() : element.value;
 
             this.validate(newValue);
             this.$emit('update:modelValue', newValue);
         },
         ensureInputIsValid(force: boolean = false) {
-            console.log('ensureInputIsValid', this.modelValue);
             return this.validate(this.modelValue, force);
         }
     },

@@ -1,9 +1,7 @@
 <template>
     <form @submit.prevent="handleSubmit">
-        <div class="text-left">
-            <h1 class="my-3 text-2xl font-semibold text-gray-700">Your registry information</h1>
-            <p class="text-gray-400">Fill up the form below to send us a message.</p>
-        </div>
+        <h1 class="my-3 text-2xl font-semibold text-gray-700">Your registry information</h1>
+        <p class="text-gray-400">Enter your personal data to be able to verify your identity.</p>
 
         <BaseInput
             ref="name"
@@ -12,6 +10,7 @@
             placeholder="mario"
             v-model="form.name"
             :rules="nameValidation"
+            :readonly="!active"
         />
 
         <BaseInput
@@ -21,6 +20,7 @@
             placeholder="rossi"
             v-model="form.surname"
             :rules="surnameValidation"
+            :readonly="!active"
         />
 
         <BaseInput
@@ -32,12 +32,13 @@
             :max="maxBirthDate"
             v-model="form.birthDate"
             :rules="birthDateValidation"
+            :readonly="!active"
         />
         <BaseButton
             type="submit"
             :loading="loading"
             class="mt-1 button-green align-self-end"
-            :disabled="!form.isValid"
+            :disabled="!form.isValid || !active"
             @click="handleSubmit"
         >Next</BaseButton>
     </form>
@@ -54,7 +55,10 @@ import { nameValidation, surnameValidation, birthDateValidation } from '../valid
 
 export default defineComponent({
     components: { BaseInput, BaseButton },
-
+    emits: ['submit'],
+    props: {
+        active: { type: Boolean, required: true },
+    },
     setup() {
         const { triggerValidation, form } = useValidation({ name: "", surname: "", birthDate: "" })
 
@@ -79,13 +83,12 @@ export default defineComponent({
             try {
 
                 await registerService.validateRegistry(formData);
+                this.$emit('submit', formData);
             } catch (error) {
                 console.error(error);
             } finally {
                 this.loading = false;
             }
-
-            console.log('Form submitted', formData);
         },
     },
 })

@@ -1,5 +1,5 @@
 <template>
-    <button @click="handleClick" v-bind="{ ...$attrs, disabled: loading || undefined }">
+    <button @click="handleClick" v-bind="buttonAttrs">
         <slot />
         <Spinner class="ml-3" v-if="loading" />
     </button>
@@ -28,6 +28,14 @@ export default defineComponent({
 
             if (shouldClick) {
                 this.$emit('click', e);
+            }
+        }
+    },
+    computed: {
+        buttonAttrs() {
+            return {
+                ...this.$attrs,
+                disabled: (this.loading || this.$attrs.disabled) as boolean,
             }
         }
     }
