@@ -1,6 +1,10 @@
 import { getCurrentInstance, nextTick, watch, reactive } from "vue"
 
-export const useValidation = <T extends {}>(formInitialValue: T) => {
+interface Options {
+    autoFocus?: boolean
+}
+
+export const useValidation = <T extends {}>(formInitialValue: T, options: Partial<Options> = {}) => {
     const instance = getCurrentInstance()
 
     if (!instance) throw new Error("useValidation must be used inside a Vue component")
@@ -9,7 +13,7 @@ export const useValidation = <T extends {}>(formInitialValue: T) => {
 
     const refs = Object.keys(formInitialValue);
 
-    const triggerValidation = () => {
+    const triggerValidation = (force = false) => {
         let someError = false;
         const instanceRefs = instance.refs;
 
@@ -19,7 +23,7 @@ export const useValidation = <T extends {}>(formInitialValue: T) => {
 
             // @ts-ignore
             // this method is in the BaseInput methods, but for a better DX I check if the ref is correct
-            const validation = ref?.ensureInputIsValid as () => boolean;
+            const validation = ref?.ensureInputIsValid as (force: boolean) => boolean;
 
             if (typeof validation !== 'function') {
                 console.error('Invalid ref, please ensure that the ref is a valid BaseInput component');
@@ -27,8 +31,15 @@ export const useValidation = <T extends {}>(formInitialValue: T) => {
                 break;
             }
 
-            if (!validation()) {
+            if (!validation(force)) {
                 someError = true;
+
+                if (options?.autoFocus) {
+                    // @ts-ignore
+                    // this is a ref to the input of the BaseInput component
+                    ref.$refs.input.focus()
+                }
+
                 break
             }
         }
