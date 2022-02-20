@@ -46,8 +46,8 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import BaseInput from './BaseInput.vue';
-import BaseButton from './BaseButton.vue';
+import BaseInput from './Input/BaseInput.vue';
+import BaseButton from './Input/BaseButton.vue';
 import { pastYearsAgo } from '../utils/date';
 import { useValidation } from '../composables/useValidation';
 import { registerService } from '../services/registerService';

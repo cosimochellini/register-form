@@ -9,17 +9,17 @@
         </div>
         <div class="md:w-2/3 md:flex-grow">
             <input
+                ref="input"
+                :type="type"
+                :name="name"
                 v-bind="$attrs"
                 class="input-form"
                 :class="inputClass"
-                :type="type"
-                :id="`${name}_input`"
-                :name="name"
                 :value="modelValue"
-                @input="onInput($event)"
-                ref="input"
-                :readonly="readonly"
                 :disabled="readonly"
+                :readonly="readonly"
+                :id="`${name}_input`"
+                @input="onInput($event)"
             />
             <Transition>
                 <div
@@ -33,9 +33,9 @@
 </template>
 
 <script lang="ts">
-import { classBindings } from '../types'
+import { classBindings } from '../../types'
 import { defineComponent, PropType } from 'vue';
-import { validationRule } from '../types/validation';
+import { validationRule } from '../../types/validation';
 
 export default defineComponent({
     name: 'BaseInput',
@@ -51,7 +51,7 @@ export default defineComponent({
             required: true
         },
         type: {
-            type: String as PropType<'text' | 'password' | 'date' | 'email' | 'tel' | 'checkbox'>,
+            type: String as PropType<'text' | 'password' | 'date' | 'email' | 'tel'>,
             default: 'text'
         },
         rules: {
@@ -93,7 +93,7 @@ export default defineComponent({
         onInput(event: Event) {
             this.dirty = true;
             const element = event.target as HTMLInputElement;
-            const newValue = this.type === 'checkbox' ? element.checked.toString() : element.value;
+            const newValue = element.value;
 
             this.validate(newValue);
             this.$emit('update:modelValue', newValue);

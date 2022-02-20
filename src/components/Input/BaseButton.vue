@@ -7,7 +7,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import Spinner from './svg/Spinner.vue';
+import Spinner from '../svg/Spinner.vue';
 
 export default defineComponent({
     inheritAttrs: false,
