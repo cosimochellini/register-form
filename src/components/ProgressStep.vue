@@ -14,7 +14,7 @@
             <div class="flex-1"></div>
         </div>
 
-        <div class="flex text-xs justify-between text-center">
+        <div class="flex text-xs text-center">
             <div class="w-1/4" v-for="step in steps">{{ step }}</div>
         </div>
     </div>
@@ -24,6 +24,7 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
 import ProgressStepUnit from './ProgressStepUnit.vue';
+
 export default defineComponent({
     emits: {
         stepClick(step: number) {

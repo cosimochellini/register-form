@@ -1,9 +1,9 @@
 <template>
     <form @submit.prevent="handleSubmit">
-        <h1 class="my-3 text-2xl font-semibold text-gray-700">Your communication information</h1>
+        <h1 class="my-3 text-2xl font-semibold text-gray-700">Your contact information</h1>
         <p
             class="text-gray-400"
-        >Fill up your communication information so that we can contact you in case of need.</p>
+        >Fill up your contact information so that we can contact you in case of need.</p>
 
         <BaseInput
             ref="email"
@@ -19,6 +19,7 @@
             type="tel"
             ref="phone"
             name="phone"
+            placeholder="3491234567"
             v-model="form.phone"
             :rules="phoneValidation"
             :readonly="!active"
@@ -68,7 +69,7 @@ export default defineComponent({
             this.loading = true;
 
             try {
-                await registerService.validateCommunication(formData);
+                await registerService.validateContact(formData);
                 this.$emit('submit', formData);
             } catch (error) {
                 console.error(error);

@@ -1,12 +1,12 @@
 import { waitRandom } from "../utils/promise"
-import { communication, privacy, registrationPayload, registry } from "../types/registration"
+import { contact, privacy, registrationPayload, registry } from "../types/registration"
 
 export const registerService = {
     validateRegistry(data: registry) {
         return waitRandom()
     },
 
-    validateCommunication(data: communication) {
+    validateContact(data: contact) {
         return waitRandom()
     },
 

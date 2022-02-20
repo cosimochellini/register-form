@@ -16,7 +16,7 @@
                 :id="`${name}_input`"
                 :name="name"
                 :value="modelValue"
-                @change="onInput($event)"
+                @input="onInput($event)"
                 ref="input"
                 :readonly="readonly"
                 :disabled="readonly"
@@ -106,8 +106,7 @@ export default defineComponent({
 
 </script>
 
-<style>
-/* we will explain what these classes do next! */
+<style scoped>
 .v-enter-active,
 .v-leave-active {
     transition: opacity 0.25s ease;

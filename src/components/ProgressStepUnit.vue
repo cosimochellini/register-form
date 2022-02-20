@@ -17,8 +17,7 @@
     >
         <div class="w-full bg-green-200 rounded items-center align-middle align-center flex-1">
             <div
-                class="bg-green-200 text-xs leading-none py-1 text-center text-gray-900 rounded"
-                style="width: 100%"
+                class="bg-green-200 text-xs leading-none py-1 text-center text-gray-900 rounded w-full"
             ></div>
         </div>
     </div>
@@ -30,6 +29,11 @@ import { classBindings } from '../types';
 
 export default defineComponent({
     name: 'ProgressStep',
+    emits: {
+        stepClick(step: number) {
+            return step !== null;
+        }
+    },
     props: {
         step: {
             type: Number,

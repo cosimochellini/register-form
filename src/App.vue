@@ -5,27 +5,27 @@ import { ref } from 'vue';
 import PrivacyStep from './components/PrivacyStep.vue'
 import RegistryStep from './components/RegistryStep.vue'
 import ProgressStep from './components/ProgressStep.vue';
-import CommunicationStep from './components/CommunicationStep.vue'
-import { communication, privacy, registrationPayload, registry } from './types/registration';
+import ContactStep from './components/ContactStep.vue'
+import { contact, privacy, registrationPayload, registry } from './types/registration';
 
 const currentStep = ref(0);
 
 const payload = ref<registrationPayload>({
     registry: { name: '', surname: '', birthDate: '' },
-    communication: { email: '', phone: '' },
+    contact: { email: '', phone: '' },
     privacy: { privacy: false, marketing: false },
 });
 
-const steps = ['Registry', 'Communication', 'Privacy', 'Finish'];
+const steps = ['Registry', 'Contact', 'Privacy', 'Finish'];
 
 const onRegistrySubmit = (data: registry) => {
     currentStep.value = 1;
     payload.value.registry = data;
 }
 
-const onCommunicationSubmit = (data: communication) => {
+const onContactSubmit = (data: contact) => {
     currentStep.value = 2;
-    payload.value.communication = data;
+    payload.value.contact = data;
 }
 
 const onPrivacySubmit = (data: privacy) => {
@@ -50,14 +50,14 @@ const onPrivacySubmit = (data: privacy) => {
                 <RegistryStep
                     class="step"
                     @submit="onRegistrySubmit"
-                    :class="currentStep === 0 ? 'active' : ''"
                     :active="currentStep === 0"
+                    :class="currentStep === 0 ? 'active' : ''"
                 />
 
-                <CommunicationStep
+                <ContactStep
                     class="step"
+                    @submit="onContactSubmit"
                     :active="currentStep === 1"
-                    @submit="onCommunicationSubmit"
                     :class="currentStep === 1 ? 'active' : ''"
                 />
 
@@ -72,7 +72,7 @@ const onPrivacySubmit = (data: privacy) => {
     </div>
 </template>
 
-<style>
+<style scoped>
 .step {
     @apply border-2 border-gray-300 my-3 rounded-md p-2 hidden md:block;
 }

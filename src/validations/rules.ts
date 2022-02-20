@@ -1,6 +1,6 @@
 import { validationRule } from '../types/validation';
 
-const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
+const phoneRegExp = /^(\((00|\+)39\)|(00|\+)39)?(38[890]|34[4-90]|36[680]|33[13-90]|32[89]|35[01]|37[019])\d{6,7}$/
 const emailRegExp = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 const passwordRegExp = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
 
@@ -40,7 +40,6 @@ export const surnameValidation: validationRule[] = [
     [minLength(3), 'Surname must be at least 3 characters'],
     [maxLength(128), 'Surname must be at most 128 characters long'],
 ];
-
 
 export const emailValidation: validationRule[] = [
     [stringRequired, 'Email is required'],
