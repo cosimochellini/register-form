@@ -74,7 +74,7 @@ const onContactSubmit = (data: contact) => {
 }
 
 const onPrivacySubmit = (data: privacy) => {
-    currentStep.value = Steps.Finish;
+    currentStep.value = Steps.Confirm;
     payload.value.privacy = data;
 }
 
