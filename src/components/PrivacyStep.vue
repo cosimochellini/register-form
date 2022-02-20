@@ -5,20 +5,14 @@
             class="text-gray-400 max-w-xl"
         >Choose to accept only the privacy or even the marketing section to allow us to track your tastes for marketing purposes</p>
 
-        <BaseInput
-            ref="privacy"
-            name="privacy"
-            type="checkbox"
-            v-model="form.privacy"
-            :rules="privacyValidation"
-        />
+        <BaseCheckBox ref="privacy" name="privacy" type="checkbox" v-model="form.privacy" />
 
-        <BaseInput type="checkbox" ref="marketing" name="marketing" v-model="form.marketing" />
+        <BaseCheckBox type="checkbox" ref="marketing" name="marketing" v-model="form.marketing" />
         <BaseButton
             type="submit"
             :loading="loading"
-            class="mt-1 button-green align-self-end"
-            :disabled="!form.isValid || !active"
+            class="mt-3 button-green"
+            :disabled="!isValid || !active"
             @click="handleSubmit"
         >Next</BaseButton>
     </form>
@@ -26,47 +20,39 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import BaseInput from './Input/BaseInput.vue';
 import BaseButton from './Input/BaseButton.vue';
-import { useValidation } from '../composables/useValidation';
+import BaseCheckBox from './Input/BaseCheckBox.vue';
 import { registerService } from '../services/registerService';
-import { privacyValidation } from '../validations/rules';
-
-const checkboxParser = (value: string) => value === 'true'
 
 export default defineComponent({
-    components: { BaseInput, BaseButton },
+    components: { BaseCheckBox, BaseButton },
     props: {
         active: { type: Boolean, required: true },
     },
     emits: ['submit'],
-    setup() {
-        const { triggerValidation, form } = useValidation({ privacy: 'false', marketing: 'false' })
-
-        return { privacyValidation, triggerValidation, form }
-    },
     data() {
         return {
             loading: false,
+            isValid: true,
+            form: { privacy: false, marketing: false }
         }
     },
     methods: {
         async handleSubmit() {
-            this.triggerValidation()
 
-            const { isValid, ...formData } = this.form;
+            if (!this.form.privacy) {
+                this.isValid = false
+            }
 
-            if (!isValid) return;
+            if (!this.isValid) return;
 
             this.loading = true;
 
             try {
-                const { privacy, marketing } = formData
-                const data = { privacy: checkboxParser(privacy), marketing: checkboxParser(marketing) };
 
-                await registerService.validatePrivacy(data)
+                await registerService.validatePrivacy(this.form)
 
-                this.$emit('submit', data);
+                this.$emit('submit', this.form);
             } catch (error) {
                 console.error(error);
             } finally {

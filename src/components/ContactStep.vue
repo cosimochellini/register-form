@@ -27,7 +27,7 @@
         <BaseButton
             type="submit"
             :loading="loading"
-            class="mt-1 button-green align-self-end"
+            class="mt-3 button-green"
             :disabled="!form.isValid || !active"
             @click="handleSubmit"
         >Next</BaseButton>

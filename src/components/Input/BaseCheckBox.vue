@@ -1,13 +1,13 @@
 <template>
-    <div class="text-gray-700 md:flex md:items-center mt-2">
-        <div class="mb-1 md:mb-0 md:w-1/3">
+    <div class="text-gray-700 flex items-center mt-2">
+        <div class="mb-0 w-1/3">
             <label
                 class="block mb-1 capitalize font-semibold max-w-md"
                 :for="name"
                 :id="`${name}_label`"
             >{{ name }}</label>
         </div>
-        <div class="md:w-2/3 md:flex-grow">
+        <div class="w-2/3 flex-grow">
             <input
                 ref="input"
                 :name="name"
@@ -26,7 +26,6 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { classBindings } from '../../types'
 
 export default defineComponent({
     name: 'BaseCheckBox',

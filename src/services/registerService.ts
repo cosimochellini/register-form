@@ -16,7 +16,7 @@ export const registerService = {
 
     sendRegistration(data: registrationPayload) {
         console.log('Sending registration...', data)
-        return waitRandom()
+        return waitRandom(2000, 6000)
     },
 
 }

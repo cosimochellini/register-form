@@ -1,5 +1,5 @@
 <template>
-    <div class="md:flex h-screen bg-gradient-to-t from-green-200 to-green-100">
+    <div class="md:flex min-h-screen bg-gradient-to-t from-green-200 to-green-100">
         <div class="m-auto bg-white rounded-md shadow-sm">
             <div class="px-5 my-5">
                 <h1
@@ -10,7 +10,7 @@
                     :current-step="currentStep"
                     @stepClick="s => currentStep = s"
                 />
-                <div class="form-outer">
+                <div class="form-outer" v-show="currentStep < 3">
                     <div class="form-inner">
                         <RegistryStep
                             class="step page"
@@ -34,6 +34,9 @@
                         />
                     </div>
                 </div>
+                <div v-show="currentStep >= 3" class="py-6 text-center">
+                    <FinalStep :payload="payload" />
+                </div>
             </div>
         </div>
     </div>
@@ -43,12 +46,13 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import PrivacyStep from './components/PrivacyStep.vue'
+import ContactStep from './components/ContactStep.vue'
 import RegistryStep from './components/RegistryStep.vue'
 import ProgressStep from './components/ProgressStep.vue';
-import ContactStep from './components/ContactStep.vue'
 import { contact, privacy, registrationPayload, registry } from './types/registration';
+import FinalStep from './components/FinalStep.vue';
 
-const currentStep = ref(0);
+const currentStep = ref(3);
 
 const payload = ref<registrationPayload>({
     registry: { name: '', surname: '', birthDate: '' },

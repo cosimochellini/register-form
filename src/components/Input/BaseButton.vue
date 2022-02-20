@@ -6,7 +6,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
+import { defineComponent } from 'vue';
 import Spinner from '../svg/Spinner.vue';
 
 export default defineComponent({
@@ -24,7 +24,7 @@ export default defineComponent({
     },
     methods: {
         handleClick(e: Event) {
-            const shouldClick = !this.$attrs.disabled === undefined && this.loading;
+            const shouldClick = !this.$attrs.disabled && !this.loading;
 
             if (shouldClick) {
                 this.$emit('click', e);

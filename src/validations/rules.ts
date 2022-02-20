@@ -21,8 +21,6 @@ const isDate = (value: string) => !isNaN(Date.parse(value));
 const hasMinimumAge = (min: number) => (value: string) => retrieveYears(value) >= min;
 const hasMaximumAge = (max: number) => (value: string) => retrieveYears(value) <= max;
 
-const trueCheckbox = (value: string) => value === 'true';
-
 function retrieveYears(birthday: string) {
     const ageDifMs = Date.now() - Date.parse(birthday);
     const ageDate = new Date(ageDifMs); // milliseconds from epoch
@@ -64,7 +62,3 @@ export const birthDateValidation: validationRule[] = [
     [hasMinimumAge(18), 'You must be at least 18 years old'],
     [hasMaximumAge(100), 'You must be at most 100 years old o_o'],
 ];
-
-export const privacyValidation: validationRule[] = [
-    [trueCheckbox, 'You must accept the privacy policy'],
-]
