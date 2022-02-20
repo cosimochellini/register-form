@@ -53,7 +53,7 @@ import RegistryStep from './components/RegistryStep.vue'
 import ProgressStep from './components/ProgressStep.vue';
 import { contact, privacy, registrationPayload, registry } from './types/registration';
 
-const currentStep = ref(Steps.Privacy);
+const currentStep = ref(Steps.Registry);
 
 const payload = ref<registrationPayload>({
     registry: { name: '', surname: '', birthDate: '' },
