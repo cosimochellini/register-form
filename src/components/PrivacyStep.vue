@@ -5,15 +5,28 @@
             class="text-gray-400 max-w-xl"
         >Choose to accept only the privacy or even the marketing section to allow us to track your tastes for marketing purposes</p>
 
-        <BaseCheckBox ref="privacy" name="privacy" type="checkbox" v-model="form.privacy" />
+        <BaseCheckBox
+            ref="privacy"
+            name="privacy"
+            type="checkbox"
+            :readonly="!active"
+            v-model="form.privacy"
+        />
 
-        <BaseCheckBox type="checkbox" ref="marketing" name="marketing" v-model="form.marketing" />
+        <BaseCheckBox
+            type="checkbox"
+            ref="marketing"
+            name="marketing"
+            :readonly="!active"
+            v-model="form.marketing"
+        />
+
         <BaseButton
             type="submit"
             :loading="loading"
+            @click="handleSubmit"
             class="mt-3 button-green"
             :disabled="!isValid || !active"
-            @click="handleSubmit"
         >Next</BaseButton>
     </form>
 </template>
