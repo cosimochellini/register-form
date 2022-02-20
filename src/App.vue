@@ -13,29 +13,29 @@
                 <div class="form-outer" v-show="currentStep < 3">
                     <div class="form-inner">
                         <RegistryStep
-                            class="step page"
+                            class="step"
                             @submit="onRegistrySubmit"
-                            :active="currentStep === 0"
+                            :active="currentStep === Steps.Registry"
                             :class="firstStepClasses()"
                         />
 
                         <ContactStep
-                            class="step page"
+                            class="step"
                             @submit="onContactSubmit"
-                            :active="currentStep === 1"
-                            :class="currentStep === 1 ? 'active' : ''"
+                            :active="currentStep === Steps.Contact"
+                            :class="currentStep === Steps.Contact ? 'active' : ''"
                         />
 
                         <PrivacyStep
-                            class="step page"
+                            class="step"
                             @submit="onPrivacySubmit"
-                            :active="currentStep === 2"
-                            :class="currentStep === 2 ? 'active' : ''"
+                            :active="currentStep === Steps.Privacy"
+                            :class="currentStep === Steps.Privacy ? 'active' : ''"
                         />
                     </div>
                 </div>
                 <div v-show="currentStep >= 3" class="py-6 text-center">
-                    <FinalStep :payload="payload" />
+                    <FinalStep :payload="payload" @success="currentStep = 4" />
                 </div>
             </div>
         </div>
@@ -51,8 +51,9 @@ import RegistryStep from './components/RegistryStep.vue'
 import ProgressStep from './components/ProgressStep.vue';
 import { contact, privacy, registrationPayload, registry } from './types/registration';
 import FinalStep from './components/FinalStep.vue';
+import { Steps } from './types';
 
-const currentStep = ref(3);
+const currentStep = ref(Steps.Registry);
 
 const payload = ref<registrationPayload>({
     registry: { name: '', surname: '', birthDate: '' },
@@ -63,24 +64,24 @@ const payload = ref<registrationPayload>({
 const steps = ['Registry', 'Contact', 'Privacy', 'Finish'];
 
 const onRegistrySubmit = (data: registry) => {
-    currentStep.value = 1;
+    currentStep.value = Steps.Contact;
     payload.value.registry = data;
 }
 
 const onContactSubmit = (data: contact) => {
-    currentStep.value = 2;
+    currentStep.value = Steps.Privacy;
     payload.value.contact = data;
 }
 
 const onPrivacySubmit = (data: privacy) => {
-    currentStep.value = 3;
+    currentStep.value = Steps.Finish;
     payload.value.privacy = data;
 }
 
 const firstStepClasses = () => {
 
     return {
-        'active': currentStep.value === 0,
+        'active': currentStep.value === Steps.Registry,
         [`-m-${currentStep.value * 33}`]: true, //-m-0 -m-33 -m-66 -m-99
     }
 }
@@ -108,7 +109,7 @@ const firstStepClasses = () => {
         width: 300%;
     }
 
-    .page {
+    .step {
         width: 33.333%;
         transition: margin-left 0.3s ease-in-out;
     }

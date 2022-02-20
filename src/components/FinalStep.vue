@@ -29,6 +29,7 @@ const text = {
 
 export default defineComponent({
     name: 'FinalStep',
+    emits: ['success'],
     props: {
         payload: {
             type: Object as PropType<registrationPayload>,
@@ -52,6 +53,8 @@ export default defineComponent({
             try {
                 await registerService.sendRegistration(this.payload);
                 this.completed = true;
+                this.$emit('success');
+
             } catch (error) {
                 console.error(error);
             } finally {
