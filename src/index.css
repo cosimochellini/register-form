@@ -44,3 +44,15 @@ button.button-red {
 button:disabled {
   @apply cursor-not-allowed opacity-50;
 }
+
+.-m-33 {
+    margin-left: -33%;
+}
+
+.-m-66 {
+    margin-left: -67%;
+}
+
+.-m-99 {
+    margin-left: -100%;
+}

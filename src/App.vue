@@ -1,6 +1,46 @@
+<template>
+    <div class="md:flex h-screen bg-gradient-to-t from-green-200 to-green-100">
+        <div class="m-auto bg-white rounded-md shadow-sm">
+            <div class="px-5 my-5">
+                <h1
+                    class="text-3xl font-semibold text-gray-700 text-center"
+                >Register to our awesome website! 🌳</h1>
+                <ProgressStep
+                    :steps="steps"
+                    :current-step="currentStep"
+                    @stepClick="s => currentStep = s"
+                />
+                <div class="form-outer">
+                    <div class="form-inner">
+                        <RegistryStep
+                            class="step page"
+                            @submit="onRegistrySubmit"
+                            :active="currentStep === 0"
+                            :class="firstStepClasses()"
+                        />
+
+                        <ContactStep
+                            class="step page"
+                            @submit="onContactSubmit"
+                            :active="currentStep === 1"
+                            :class="currentStep === 1 ? 'active' : ''"
+                        />
+
+                        <PrivacyStep
+                            class="step page"
+                            @submit="onPrivacySubmit"
+                            :active="currentStep === 2"
+                            :class="currentStep === 2 ? 'active' : ''"
+                        />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+
 <script setup lang="ts">
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
 import { ref } from 'vue';
 import PrivacyStep from './components/PrivacyStep.vue'
 import RegistryStep from './components/RegistryStep.vue'
@@ -33,51 +73,40 @@ const onPrivacySubmit = (data: privacy) => {
     payload.value.privacy = data;
 }
 
+const firstStepClasses = () => {
+
+    return {
+        'active': currentStep.value === 0,
+        [`-m-${currentStep.value * 33}`]: true, //-m-0 -m-33 -m-66 -m-99
+    }
+}
+
 </script>
 
-<template>
-    <div class="flex h-screen bg-gradient-to-t from-green-200 to-green-100">
-        <div class="m-auto bg-white rounded-md shadow-sm">
-            <div class="px-5 my-5">
-                <h1
-                    class="text-3xl font-semibold text-gray-700 text-center"
-                >Register to our awesome website! 🌳</h1>
-                <ProgressStep
-                    :current-step="currentStep"
-                    :steps="steps"
-                    @stepClick="s => currentStep = s"
-                />
-                <RegistryStep
-                    class="step"
-                    @submit="onRegistrySubmit"
-                    :active="currentStep === 0"
-                    :class="currentStep === 0 ? 'active' : ''"
-                />
-
-                <ContactStep
-                    class="step"
-                    @submit="onContactSubmit"
-                    :active="currentStep === 1"
-                    :class="currentStep === 1 ? 'active' : ''"
-                />
-
-                <PrivacyStep
-                    class="step"
-                    @submit="onPrivacySubmit"
-                    :active="currentStep === 2"
-                    :class="currentStep === 2 ? 'active' : ''"
-                />
-            </div>
-        </div>
-    </div>
-</template>
 
 <style scoped>
 .step {
-    @apply border-2 border-gray-300 my-3 rounded-md p-2 hidden md:block;
+    @apply md:border-2 border-gray-300 my-3 rounded-md p-2 md:!m-2;
 }
 
 .step.active {
-    @apply border-green-500 block;
+    @apply border-green-500;
+}
+
+@media screen and (max-width: 640px) {
+    .form-outer {
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .form-inner {
+        display: flex;
+        width: 300%;
+    }
+
+    .page {
+        width: 33.333%;
+        transition: margin-left 0.3s ease-in-out;
+    }
 }
 </style>

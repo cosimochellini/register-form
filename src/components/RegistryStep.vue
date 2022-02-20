@@ -1,7 +1,7 @@
 <template>
     <form @submit.prevent="handleSubmit">
         <h1 class="my-3 text-2xl font-semibold text-gray-700">Your registry information</h1>
-        <p class="text-gray-400">Enter your personal data to be able to verify your identity.</p>
+        <p class="text-gray-400 max-w-sm">Enter your personal data to be able to verify your identity.</p>
 
         <BaseInput
             ref="name"
@@ -37,7 +37,7 @@
         <BaseButton
             type="submit"
             :loading="loading"
-            class="mt-1 button-green align-self-end"
+            class="mt-3 button-green"
             :disabled="!form.isValid || !active"
             @click="handleSubmit"
         >Next</BaseButton>
