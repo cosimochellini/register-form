@@ -66,7 +66,7 @@ export default defineComponent({
     },
     methods: {
         async handleSubmit() {
-            this.triggerValidation()
+            this.triggerValidation(true)
 
             const { isValid, ...formData } = this.form;
 
