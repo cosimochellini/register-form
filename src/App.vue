@@ -1,5 +1,5 @@
 <template>
-    <div class="md:flex min-h-screen bg-gradient-to-t from-green-200 to-green-100">
+    <div class="sm:flex min-h-screen bg-gradient-to-t from-green-200 to-green-100">
         <div class="m-auto bg-white rounded-md shadow-sm">
             <div class="px-5 my-5">
                 <h1
@@ -91,7 +91,7 @@ const firstStepClasses = () => {
 
 <style scoped>
 .step {
-    @apply md:border-2 border-gray-300 my-3 rounded-md p-2 md:!m-2;
+    @apply sm:border-2 border-gray-300 my-3 rounded-md p-2 sm:!m-2;
 }
 
 .step.active {
