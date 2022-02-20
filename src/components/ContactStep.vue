@@ -24,6 +24,9 @@
             :rules="phoneValidation"
             :readonly="!active"
         />
+
+        <Alert v-bind="backendError" v-if="apiError" type="error" class="my-3" />
+
         <BaseButton
             type="submit"
             :loading="loading"
@@ -35,15 +38,17 @@
 </template>
 
 <script lang="ts">
+import Alert from './Alert.vue';
 import { defineComponent } from 'vue'
 import BaseInput from './Input/BaseInput.vue';
 import BaseButton from './Input/BaseButton.vue';
+import { backendError } from '../shared/messages';
 import { useValidation } from '../composables/useValidation';
 import { registerService } from '../services/registerService';
 import { emailValidation, phoneValidation } from '../validations/rules';
 
 export default defineComponent({
-    components: { BaseInput, BaseButton },
+    components: { BaseInput, BaseButton, Alert },
     props: {
         active: { type: Boolean, required: true },
     },
@@ -51,11 +56,12 @@ export default defineComponent({
     setup() {
         const { triggerValidation, form } = useValidation({ email: "", phone: "" })
 
-        return { emailValidation, phoneValidation, triggerValidation, form }
+        return { emailValidation, phoneValidation, triggerValidation, form, backendError }
     },
     data() {
         return {
             loading: false,
+            apiError: false,
         }
     },
     methods: {
@@ -67,12 +73,20 @@ export default defineComponent({
             if (!isValid) return;
 
             this.loading = true;
+            this.apiError = false;
 
             try {
-                await registerService.validateContact(formData);
-                this.$emit('submit', formData);
+                const isValid = await registerService.validateContact(formData);
+
+                if (!isValid) {
+                    this.apiError = true;
+                } else {
+                    this.apiError = false;
+                    this.$emit('submit', formData);
+                }
             } catch (error) {
                 console.error(error);
+                this.apiError = true;
             } finally {
                 this.loading = false;
             }

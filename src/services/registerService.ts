@@ -1,22 +1,22 @@
-import { waitRandom } from "../utils/promise"
+import { waitRandomGetResult } from "../utils/promise"
 import { registrationPayload } from "../types/registration"
 
 export const registerService = {
     validateRegistry(data: registrationPayload["registry"]) {
-        return waitRandom()
+        return waitRandomGetResult()
     },
 
     validateContact(data: registrationPayload["contact"]) {
-        return waitRandom()
+        return waitRandomGetResult()
     },
 
     validatePrivacy(data: registrationPayload["privacy"]) {
-        return waitRandom()
+        return waitRandomGetResult()
     },
 
     sendRegistration(data: registrationPayload) {
         console.log('Sending registration...', data)
-        return waitRandom(2000, 6000)
+        return waitRandomGetResult(2000, 6000)
     },
 
 }

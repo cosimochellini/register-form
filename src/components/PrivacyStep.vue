@@ -22,6 +22,7 @@
         />
 
         <Alert v-if="!isValid" v-bind="alertText" type="warning" class="my-3" />
+        <Alert v-bind="backendError" v-if="apiError" type="error" class="my-3" />
 
         <BaseButton
             type="submit"
@@ -37,6 +38,7 @@
 import Alert from './Alert.vue';
 import { defineComponent } from 'vue'
 import BaseButton from './Input/BaseButton.vue';
+import { backendError } from '../shared/messages';
 import BaseCheckBox from './Input/BaseCheckBox.vue';
 import { registerService } from '../services/registerService';
 
@@ -52,12 +54,13 @@ export default defineComponent({
     },
     emits: ['submit'],
     setup() {
-        return { alertText }
+        return { alertText, backendError }
     },
     data() {
         return {
-            loading: false,
             isValid: true,
+            loading: false,
+            apiError: false,
             form: { privacy: false, marketing: false }
         }
     },
@@ -66,19 +69,24 @@ export default defineComponent({
 
             if (!this.form.privacy) {
                 this.isValid = false
+                return;
             }
 
-            if (!this.isValid) return;
-
             this.loading = true;
+            this.apiError = false;
 
             try {
+                const isValid = await registerService.validatePrivacy(this.form);
 
-                await registerService.validatePrivacy(this.form)
-
-                this.$emit('submit', this.form);
+                if (!isValid) {
+                    this.apiError = true;
+                } else {
+                    this.apiError = false;
+                    this.$emit('submit', this.form);
+                }
             } catch (error) {
                 console.error(error);
+                this.apiError = true;
             } finally {
                 this.loading = false;
             }
@@ -88,6 +96,7 @@ export default defineComponent({
         form: {
             handler(newValue) {
                 this.isValid = newValue.privacy
+                this.apiError = false
             },
             deep: true
         }

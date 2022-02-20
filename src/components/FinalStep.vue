@@ -1,11 +1,12 @@
 <template>
     <Alert v-bind="text.introduction" v-if="!completed" type="info" />
-    <Alert v-bind="text.completed" v-if="completed" type="success" />
+    <Alert v-bind="text.completed" v-else type="success" />
+    <Alert v-bind="backendError" v-if="apiError" type="error" class="my-4" />
     <BaseButton
-        class="button-green mt-4"
-        @click="handleClick"
-        :loading="loading"
         v-if="!completed"
+        :loading="loading"
+        @click="handleClick"
+        class="button-green mt-4"
     >Send now</BaseButton>
 </template>
 
@@ -13,6 +14,7 @@
 import Alert from './Alert.vue';
 import BaseButton from './Input/BaseButton.vue';
 import { defineComponent, PropType } from 'vue';
+import { backendError } from '../shared/messages';
 import { registrationPayload } from '../types/registration';
 import { registerService } from '../services/registerService';
 
@@ -38,25 +40,33 @@ export default defineComponent({
     },
     components: { Alert, BaseButton },
     setup() {
-        return { text }
+        return { text, backendError }
     },
     data() {
         return {
             loading: false,
             completed: false,
+            apiError: false,
         }
     },
     methods: {
         async handleClick() {
             this.loading = true;
+            this.apiError = false;
 
             try {
-                await registerService.sendRegistration(this.payload);
-                this.completed = true;
-                this.$emit('success');
+                const isValid = await registerService.sendRegistration(this.payload);
 
+                if (!isValid) {
+                    this.apiError = true;
+                } else {
+                    this.completed = true;
+                    this.apiError = false;
+                    this.$emit('success');
+                }
             } catch (error) {
                 console.error(error);
+                this.apiError = true;
             } finally {
                 this.loading = false;
             }
