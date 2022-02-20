@@ -35,7 +35,7 @@
                     </div>
                 </div>
                 <div v-show="currentStep >= 3" class="py-6 text-center">
-                    <FinalStep :payload="payload" @success="currentStep = 4" />
+                    <FinalStep :payload="payload" @success="currentStep = Steps.Finish" />
                 </div>
             </div>
         </div>
@@ -45,15 +45,15 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { Steps } from './types';
+import FinalStep from './components/FinalStep.vue';
 import PrivacyStep from './components/PrivacyStep.vue'
 import ContactStep from './components/ContactStep.vue'
 import RegistryStep from './components/RegistryStep.vue'
 import ProgressStep from './components/ProgressStep.vue';
 import { contact, privacy, registrationPayload, registry } from './types/registration';
-import FinalStep from './components/FinalStep.vue';
-import { Steps } from './types';
 
-const currentStep = ref(Steps.Registry);
+const currentStep = ref(Steps.Privacy);
 
 const payload = ref<registrationPayload>({
     registry: { name: '', surname: '', birthDate: '' },

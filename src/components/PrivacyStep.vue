@@ -21,6 +21,8 @@
             v-model="form.marketing"
         />
 
+        <Alert v-if="!isValid" v-bind="alertText" type="warning" class="my-3" />
+
         <BaseButton
             type="submit"
             :loading="loading"
@@ -32,17 +34,26 @@
 </template>
 
 <script lang="ts">
+import Alert from './Alert.vue';
 import { defineComponent } from 'vue'
 import BaseButton from './Input/BaseButton.vue';
 import BaseCheckBox from './Input/BaseCheckBox.vue';
 import { registerService } from '../services/registerService';
 
+const alertText = {
+    title: 'You must accept the privacy section',
+    description: 'You must accept the privacy section to continue the registration',
+}
+
 export default defineComponent({
-    components: { BaseCheckBox, BaseButton },
+    components: { BaseCheckBox, BaseButton, Alert },
     props: {
         active: { type: Boolean, required: true },
     },
     emits: ['submit'],
+    setup() {
+        return { alertText }
+    },
     data() {
         return {
             loading: false,
@@ -73,6 +84,14 @@ export default defineComponent({
             }
         },
     },
+    watch: {
+        form: {
+            handler(newValue) {
+                this.isValid = newValue.privacy
+            },
+            deep: true
+        }
+    }
 })
 
 </script>

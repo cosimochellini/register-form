@@ -1,6 +1,6 @@
 <template>
-    <Alert v-bind="text.introduction" v-if="!completed" />
-    <Alert v-bind="text.completed" v-if="completed" />
+    <Alert v-bind="text.introduction" v-if="!completed" type="info" />
+    <Alert v-bind="text.completed" v-if="completed" type="success" />
     <BaseButton
         class="button-green mt-4"
         @click="handleClick"
