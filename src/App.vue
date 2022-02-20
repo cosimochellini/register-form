@@ -34,7 +34,7 @@
                         />
                     </div>
                 </div>
-                <div v-show="currentStep >= 3" class="py-6 text-center">
+                <div v-if="currentStep >= 3" class="py-6 text-center">
                     <FinalStep :payload="payload" @success="currentStep = Steps.Finish" />
                 </div>
             </div>
