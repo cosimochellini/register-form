@@ -22,13 +22,6 @@ input[type="checkbox"].input-form {
   @apply shadow-none border-0 ring-0
 }
 
-/*
-customize the input placeholder color for the vee-validate plugin
- */
-span[role="alert"] {
-  @apply text-xs text-red-700;
-}
-
 button {
   @apply inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md text-white;
 }

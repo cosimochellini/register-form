@@ -15,8 +15,8 @@
                         <RegistryStep
                             class="step"
                             @submit="onRegistrySubmit"
-                            :active="currentStep === Steps.Registry"
                             :class="firstStepClasses()"
+                            :active="currentStep === Steps.Registry"
                         />
 
                         <ContactStep
